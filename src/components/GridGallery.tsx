@@ -1,25 +1,26 @@
 import { Action, ActionPanel, Grid } from "@raycast/api";
 import fs from "fs";
 import path from "path";
+import { useMemo } from "react";
+
+function getFilesInDirectory(directory: string) {
+  try {
+    return fs.readdirSync(directory).map((file) => path.join(directory, file));
+  } catch (err) {
+    console.error(`Error reading directory: ${err}`);
+    return [];
+  }
+}
 
 export default function GridGallery({ folder }: { folder: string }) {
-  function getFilesInDirectory(directory: string) {
-    try {
-      return fs.readdirSync(directory).map((file) => path.join(directory, file));
-    } catch (err) {
-      console.error(`Error reading directory: ${err}`);
-      return [];
-    }
-  }
-
-  const files = getFilesInDirectory(folder);
-  console.log(files);
+  const files = useMemo(() => getFilesInDirectory(folder), [folder]);
 
   return (
     <Grid
-      columns={5}
-      inset={Grid.Inset.Large}
-      filtering={false}
+      isLoading={files.length === 0}
+      columns={4}
+      fit={Grid.Fit.Fill}
+      aspectRatio="16/9"
       navigationTitle="Search wallpaper"
       searchBarPlaceholder="Search your favorite wallpaper"
     >
@@ -29,8 +30,8 @@ export default function GridGallery({ folder }: { folder: string }) {
           content={file}
           actions={
             <ActionPanel>
-              <Action.Open key={file} target={file} title="Open file" />
-              <Action.CopyToClipboard title="Copy file" content={file} />
+              <Action.Open key={file} target={file} title="Open File" />
+              <Action.CopyToClipboard title="Copy File" content={file} />
             </ActionPanel>
           }
         />

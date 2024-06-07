@@ -1,11 +1,6 @@
 import { Action, ActionPanel, Form } from "@raycast/api";
-import fs from "fs";
 
-interface Props {
-  onFolderChosen: (folder: string) => void;
-}
-
-export default function ChoosingFolder({ onFolderChosen }: Props) {
+export default function ChoosingFolder({ setCachedFolder }: { setCachedFolder: (folder: string) => void }) {
   return (
     <Form
       actions={
@@ -14,9 +9,7 @@ export default function ChoosingFolder({ onFolderChosen }: Props) {
             title="Submit Name"
             onSubmit={(values: { folders: string[] }) => {
               const folder = values.folders[0];
-              if (!fs.existsSync(folder) || fs.lstatSync(folder).isDirectory()) {
-                onFolderChosen(folder);
-              }
+              setCachedFolder(folder);
             }}
           />
         </ActionPanel>

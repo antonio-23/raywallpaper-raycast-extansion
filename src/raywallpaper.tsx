@@ -1,21 +1,24 @@
-import { useEffect, useState } from "react";
-import GridGallery from "./components/GridGallery";
+import { Cache } from "@raycast/api";
 import ChoosingFolder from "./components/ChoosingFolder";
-import { LocalStorage } from "@raycast/api";
+import GridGallery from "./components/GridGallery";
+import { useEffect, useState, useMemo, useCallback } from "react";
 
 export default function Command() {
-  const [folder, setFolder] = useState<string>("");
+  const cache = useMemo(() => new Cache(), []);
+  const [cached, setCached] = useState("");
+
+  const setCachedFolder = useCallback(
+    (folder: string) => {
+      cache.set("folder", folder);
+      setCached(folder);
+    },
+    [cache],
+  );
 
   useEffect(() => {
-    (async () => {
-      const choosedFolder = await LocalStorage.getItem<string>("choosedFolder");
-      setFolder(choosedFolder || "");
-    })();
-  }, []);
+    const folder = cache.get("folder") ?? "";
+    setCached(folder);
+  }, [cache]);
 
-  const handleFolderChosen = (folder: string) => {
-    setFolder(folder);
-  };
-
-  return folder ? <GridGallery folder={folder} /> : <ChoosingFolder onFolderChosen={handleFolderChosen} />;
+  return cached.length > 0 ? <GridGallery folder={cached} /> : <ChoosingFolder setCachedFolder={setCachedFolder} />;
 }
