@@ -1,15 +1,11 @@
 import { Action, ActionPanel, Grid } from "@raycast/api";
-import fs from "fs";
-import path from "path";
+import { runAppleScript } from "@raycast/utils";
 import { useMemo } from "react";
+import { scriptSetWallpaper } from "../utils/applescript-utils";
+import { getFilesInDirectory } from "../utils/common-utils";
 
-function getFilesInDirectory(directory: string) {
-  try {
-    return fs.readdirSync(directory).map((file) => path.join(directory, file));
-  } catch (err) {
-    console.error(`Error reading directory: ${err}`);
-    return [];
-  }
+async function setWallpaper(file: string) {
+  await runAppleScript(scriptSetWallpaper(file));
 }
 
 export default function GridGallery({ folder }: { folder: string }) {
@@ -30,7 +26,7 @@ export default function GridGallery({ folder }: { folder: string }) {
           content={file}
           actions={
             <ActionPanel>
-              <Action.Open key={file} target={file} title="Open File" />
+              <Action key={file} title="Set Wallpaper" onAction={() => setWallpaper(file)} />
               <Action.CopyToClipboard title="Copy File" content={file} />
             </ActionPanel>
           }
