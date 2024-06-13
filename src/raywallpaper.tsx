@@ -9,10 +9,12 @@ export default function Command() {
 
   const setCachedFolder = useCallback(
     (folder: string) => {
+      const cached = cache.get("folder") ?? "";
+      console.log(`Setting cached folder to ${cached}`);
       cache.set("folder", folder);
       setCached(folder);
     },
-    [cache],
+    [cache, cached],
   );
 
   useEffect(() => {
@@ -20,5 +22,9 @@ export default function Command() {
     setCached(folder);
   }, [cache]);
 
-  return cached.length > 0 ? <GridGallery folder={cached} /> : <ChoosingFolder setCachedFolder={setCachedFolder} />;
+  return cached.length > 0 ? (
+    <GridGallery folder={cached} setCachedFolder={setCachedFolder} />
+  ) : (
+    <ChoosingFolder setCachedFolder={setCachedFolder} />
+  );
 }

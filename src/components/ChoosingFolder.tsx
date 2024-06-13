@@ -8,8 +8,7 @@ export default function ChoosingFolder({ setCachedFolder }: { setCachedFolder: (
           <Action.SubmitForm
             title="Submit Name"
             onSubmit={(values: { folders: string[] }) => {
-              const folder = values.folders[0];
-              setCachedFolder(folder);
+              setCachedFolder(values.folders[0]);
             }}
           />
         </ActionPanel>
