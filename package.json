@@ -2,7 +2,7 @@
   "$schema": "https://www.raycast.com/schemas/extension.json",
   "name": "raywallpaper",
   "title": "RayWallpaper",
-  "description": "This allows you to select a wallpaper from a folder in the Finder.",
+  "description": "Allows you to select a wallpaper from a folder in the Finder.",
   "icon": "command-icon.png",
   "author": "antonio-23",
   "owner": "ant-dev",
@@ -15,14 +15,68 @@
   "commands": [
     {
       "name": "raywallpaper",
-      "title": "raywallpaper",
-      "description": "This allows you to select a wallpaper from a folder in the Finder.",
-      "mode": "view"
+      "title": "Set Wallpaper",
+      "description": "Allows you to select a wallpaper from a folder in the Finder.",
+      "mode": "view",
+      "preferences": [
+        {
+          "name": "gridSize",
+          "title": "Grid Size",
+          "description": "Grid size of the wallpaper picker",
+          "type": "dropdown",
+          "data": [
+            {
+              "title": "1",
+              "value": "1"
+            },
+            {
+              "title": "2",
+              "value": "2"
+            },
+            {
+              "title": "3",
+              "value": "3"
+            },
+            {
+              "title": "4",
+              "value": "4"
+            },
+            {
+              "title": "5",
+              "value": "5"
+            },
+            {
+              "title": "6",
+              "value": "6"
+            },
+            {
+              "title": "7",
+              "value": "7"
+            },
+            {
+              "title": "8",
+              "value": "8"
+            }
+          ],
+          "default": "4",
+          "required": false
+        },
+        {
+          "name": "wallpaperTitle",
+          "type": "checkbox",
+          "label": "Show Wallpaper Titles",
+          "title": "Shows Wallpaper Titles",
+          "description": "Shows the wallpaper titles in the picker",
+          "required": false,
+          "defaultValue": false
+        }
+      ]
     }
   ],
   "dependencies": {
-    "@raycast/api": "^1.69.0",
-    "@raycast/utils": "^1.13.2"
+    "@raycast/api": "^1.76.0",
+    "@raycast/utils": "^1.13.2",
+    "braces": "^3.0.3"
   },
   "devDependencies": {
     "@raycast/eslint-config": "^1.0.6",

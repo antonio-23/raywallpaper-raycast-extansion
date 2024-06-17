@@ -1,7 +1,20 @@
-import { Action, ActionPanel, Grid, Icon, openCommandPreferences, useNavigation } from "@raycast/api";
+import {
+  Action,
+  ActionPanel,
+  Grid,
+  Icon,
+  getPreferenceValues,
+  openCommandPreferences,
+  useNavigation,
+} from "@raycast/api";
 import { useMemo } from "react";
 import { getFilesInDirectory, setWallpaper } from "../utils/common-utils";
 import ChoosingFolder from "./ChoosingFolder";
+
+interface Preferences {
+  gridSize: string;
+  wallpaperTitle: boolean;
+}
 
 export default function GridGallery({
   folder,
@@ -12,10 +25,11 @@ export default function GridGallery({
 }) {
   const files = useMemo(() => getFilesInDirectory(folder), [folder]);
   const { push } = useNavigation();
+  const { gridSize, wallpaperTitle } = getPreferenceValues<Preferences>();
 
   return (
     <Grid
-      columns={4}
+      columns={Number(gridSize)}
       fit={Grid.Fit.Fill}
       aspectRatio={"16/9"}
       filtering={false}
@@ -34,6 +48,12 @@ export default function GridGallery({
               }}
               shortcut={{ modifiers: ["opt"], key: "p" }}
             />
+            <Action
+              title="Open Preferences"
+              icon={Icon.Gear}
+              shortcut={{ modifiers: ["shift", "cmd"], key: "," }}
+              onAction={() => openCommandPreferences()}
+            />
           </ActionPanel>
         }
       />
@@ -41,6 +61,7 @@ export default function GridGallery({
         <Grid.Item
           key={file}
           content={{ source: file }}
+          title={wallpaperTitle ? file.split("/").pop() : undefined}
           actions={
             <ActionPanel>
               <Action title="Set as Wallpaper" icon={Icon.Desktop} onAction={() => setWallpaper(file)} />

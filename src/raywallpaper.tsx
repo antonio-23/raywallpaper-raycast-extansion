@@ -9,7 +9,6 @@ export default function Command() {
   const [isInitial, setIsInitial] = useState<boolean>(true);
 
   const setCachedFolder = (folder: string) => {
-    console.log(`Setting cached folder to ${folder}`);
     cache.set("folder", folder);
     setCached(folder);
     setIsInitial(false);
