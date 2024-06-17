@@ -1,4 +1,4 @@
-import { Action, ActionPanel, Cache, Grid, Icon, openCommandPreferences, useNavigation } from "@raycast/api";
+import { Action, ActionPanel, Grid, Icon, openCommandPreferences, useNavigation } from "@raycast/api";
 import { useMemo } from "react";
 import { getFilesInDirectory, setWallpaper } from "../utils/common-utils";
 import ChoosingFolder from "./ChoosingFolder";
@@ -11,7 +11,6 @@ export default function GridGallery({
   setCachedFolder: (folder: string) => void;
 }) {
   const files = useMemo(() => getFilesInDirectory(folder), [folder]);
-  const cache = new Cache();
   const { push } = useNavigation();
 
   return (
@@ -31,7 +30,6 @@ export default function GridGallery({
               title="Change Folder Path"
               icon={Icon.Folder}
               onAction={() => {
-                cache.remove("folder");
                 push(<ChoosingFolder setCachedFolder={setCachedFolder} />);
               }}
               shortcut={{ modifiers: ["opt"], key: "p" }}
@@ -51,7 +49,6 @@ export default function GridGallery({
                 title="Change Folder Path"
                 icon={Icon.Folder}
                 onAction={() => {
-                  cache.remove("folder");
                   push(<ChoosingFolder setCachedFolder={setCachedFolder} />);
                 }}
                 shortcut={{ modifiers: ["opt"], key: "p" }}
@@ -60,7 +57,7 @@ export default function GridGallery({
                 title="Open Preferences"
                 icon={Icon.Gear}
                 shortcut={{ modifiers: ["shift", "cmd"], key: "," }}
-                onAction={openCommandPreferences}
+                onAction={() => openCommandPreferences()}
               />
             </ActionPanel>
           }
